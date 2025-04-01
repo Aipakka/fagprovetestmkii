@@ -1,6 +1,7 @@
 import DefaultButton from '../components/DefaultButton.jsx'
 export default function LoginnClient() { 
     async function ClientLoginn(){
+        "use server"
     }
     return (
         <div className='flex justify-center items-center  w-[100dvw] h-[100dvh]' >
