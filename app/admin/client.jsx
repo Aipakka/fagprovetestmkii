@@ -1,10 +1,10 @@
-import SQL from '../../lib/sql'
-import bcrypt from "bcrypt"
+import SQL from '?/lib/sql'
 import DefaultButton from '../../components/DefaultButton'
+import { HashPassword } from '?/lib/tools'
 export default function AdminClient(){
     async function sqlWrapper() {
         "use server"
-        const pwdHash = await bcrypt.hash('Password01', 3);
+        const pwdHash = HashPassword('Password01')
         const result = await SQL.InsertUser('admin', pwdHash, 'MainAdmin', 'Server', 'admin@admin.fake', '+4744477999');
         console.log(result)
     }
