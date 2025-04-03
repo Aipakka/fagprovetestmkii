@@ -10,7 +10,7 @@ export const metadata = {
 export default function RootLayout({children,}) {
   return (
     <html lang="en">
-      <body className='flex justify-center items-center  w-[100dvw] h-[100dvh] bg-gray-400 '>
+      <body className='overflow-x-hidden flex justify-center items-center  w-[100dvw] h-[100dvh] bg-gray-400 '>
         {children}
       </body>
     </html>

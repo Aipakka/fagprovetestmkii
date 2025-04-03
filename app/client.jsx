@@ -15,7 +15,6 @@ export default function LoginnClient() {
                 <input className='p-1 rounded-lg outline-gray-800 outline w-full ' id='Password' placeholder='Password'/>
                 </p>
                 <DefaultButton clickFunction={ClientLoginn} text={'Loginn'}/>
-                <p className='bottom-2.5'>Not a user? <Link href={'/register'} className='text-blue-900'> Register one</Link> </p>
             </div>
         </> 
     );
