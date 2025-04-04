@@ -2,6 +2,8 @@
 import AdminClient from './client';
 import SQL from '../../lib/sql';
 import { CreateNewParkingSlot, CreateNewStation, CreateNewUser } from '../../lib/tools';
+import { cookies } from 'next/headers';
+import { getIronSession } from 'iron-session';
 async function CreateUser(username, password, name, adress, email, telephone, userlevel) {
     "use server"
     const res = await CreateNewUser(username, password, name, adress, email, telephone, userlevel);
@@ -18,6 +20,21 @@ async function CreateStation(stationName, admin, slots, price, floors, maxSlotsP
     return res;
 
 }
+async function DestroySession() {
+    "use server"
+    try {
+        const userCookies = await cookies();
+        const session = await getIronSession(userCookies, {
+            password: process.env.SESSION_PWD,
+            cookieName: 'session',
+        });
+         session.destroy()
+        return 'success'
+    } catch (error) {
+        return 'error'
+    }
+
+}
 export default async function AdminServer() {
     const admins = await SQL.GetStationAdmins();
     let cleanedArray = []
@@ -31,5 +48,5 @@ export default async function AdminServer() {
         cleanedArray.push({ Name: tempArray[1], UserID: tempArray[0] })
     })
 
-    return (<AdminClient CreateStation={CreateStation} CreateUser={CreateUser} adminList={cleanedArray} />)
+    return (<AdminClient DestroySession={DestroySession} CreateStation={CreateStation} CreateUser={CreateUser} adminList={cleanedArray} />)
 }

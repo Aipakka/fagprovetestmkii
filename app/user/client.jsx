@@ -4,7 +4,7 @@ import DefaultInput from '$/DefaultInput'
 import { useState, useEffect } from 'react'
 import DefaultButton from '$/DefaultButton'
 import { useRouter } from 'next/navigation'
-export default function UserClient({ adminList, CreateUser, CreateStation }) {
+export default function UserClient({DestroySession, adminList, CreateUser, CreateStation }) {
     //file variables
     const router = useRouter();
     //user creation useStates
@@ -64,8 +64,10 @@ export default function UserClient({ adminList, CreateUser, CreateStation }) {
             setSucessmsg('Station: ' + stationName + ' added.')
         }
     }
-    function ExitAdminInterface() {
-
+    async function ExitAdminInterface() {
+        let res = await DestroySession();
+        if (res === 'success')
+            router.replace('/')
     }
     useEffect(() => { setTimeout(()=>setErrormsg(''), 30000); }, [errormsg])
     useEffect(() => { setTimeout(()=>setSucessmsg(''), 30000); }, [sucessMsg])
@@ -85,7 +87,7 @@ export default function UserClient({ adminList, CreateUser, CreateStation }) {
                 <DefaultButton active={stage === 'userDataInterface' ? true : false} clickFunction={() => setStage('userDataInterface')} text={'User data'} />
                 <DefaultButton active={stage === 'carDataInterface' ? true : false} clickFunction={() => setStage('carDataInterface')} text={'Cars'} />
                 <DefaultButton active={stage === 'parkingDataInterface' ? true : false} clickFunction={() => setStage('parkingDataInterface')} text={'Parkings'} />
-                <DefaultButton clickFunction={() => ExitAdminInterface} text={'Exit admin'} />
+                <DefaultButton clickFunction={() => ExitAdminInterface()} text={'Exit admin'} />
             </div>
             <div className='flex flex-col lg:flex-row w-full max-lg:items-center justify-center gap-10'>
                 {swapStage()}
