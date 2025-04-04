@@ -4,7 +4,7 @@ import DefaultInput from '$/DefaultInput'
 import { useState, useEffect } from 'react'
 import DefaultButton from '$/DefaultButton'
 import { useRouter } from 'next/navigation'
-export default function AdminClient({ adminList, CreateUser, CreateStation }) {
+export default function StationAdminClient({ adminList, CreateUser, CreateStation }) {
     //file variables
     const router = useRouter();
     //user creation useStates

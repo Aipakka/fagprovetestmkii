@@ -1,21 +1,30 @@
+"use client"
+
 import Link from 'next/link.js';
+import DefaultInput from '$/DefaultInput'
 import DefaultButton from '$/DefaultButton'
-export default function LoginnClient() { 
-    async function ClientLoginn(){
-        "use server"
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+export default function LoginnClient({ VerifyLoginn }) {
+    const router = useRouter();
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    async function ClientLoginn() {
+        const res =await VerifyLoginn(username, password)
+        if (res ==='sqlErr' || 'sesionErr')
+        router.push(`/${res}`)
     }
     return (
         <>
-            <div className='rounded-lg justify-center items-center bg-cyan-100 w-[30%] h-fit p-5 flex flex-col gap-3.5'>
+            <div className='rounded-lg justify-center items-center bg-cyan-100 w-[30%] h-fit p-5 flex flex-col gap-7'>
+                <div className='flex flex-col  w-full items-center justify-center gap-3.5'>
                 <p>Loginn</p>
-                <p className='w-4/5 lg:w-3/5  xl:w-2/5' > Username<br/>
-                <input className=' p-1 rounded-lg outline-gray-800 outline w-full' id='Username' placeholder='Username' />
-                </p>
-                <p className='w-4/5 lg:w-3/5  xl:w-2/5'> Password<br/>
-                <input className='p-1 rounded-lg outline-gray-800 outline w-full ' id='Password' placeholder='Password'/>
-                </p>
-                <DefaultButton clickFunction={ClientLoginn} text={'Loginn'}/>
+
+                    <DefaultInput text={'Username'} value={username} onValueChange={setUsername} type={'text'} />
+                    <DefaultInput text={'Password'} value={password} onValueChange={setPassword} type={'password'} />
+                </div>
+                <DefaultButton clickFunction={ClientLoginn} text={'Loginn'} />
             </div>
-        </> 
+        </>
     );
 }

@@ -1,5 +1,5 @@
 "use server"
-import AdminClient from './client';
+import StationAdminClient from './client';
 import SQL from '../../lib/sql';
 import { CreateNewParkingSlot, CreateNewStation, CreateNewUser } from '../../lib/tools';
 async function CreateUser(username, password, name, adress, email, telephone, userlevel) {
@@ -31,5 +31,5 @@ export default async function AdminServer() {
         cleanedArray.push({ Name: tempArray[1], UserID: tempArray[0] })
     })
 
-    return (<AdminClient CreateStation={CreateStation} CreateUser={CreateUser} adminList={cleanedArray} />)
+    return (<StationAdminClient CreateStation={CreateStation} CreateUser={CreateUser} adminList={cleanedArray} />)
 }
