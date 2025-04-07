@@ -4,27 +4,11 @@ import DefaultInput from '$/DefaultInput'
 import { useState, useEffect } from 'react'
 import DefaultButton from '$/DefaultButton'
 import { useRouter } from 'next/navigation'
-export default function UserClient({DestroySession, adminList, CreateUser, CreateStation }) {
+export default function UserClient({DestroySession,  CreateCar}) {
     //file variables
     const router = useRouter();
     //user creation useStates
-    const [username, setUsername] = useState('')
-    const [name, setName] = useState('')
-    const [adress, setAdress] = useState('')
-    const [email, setEmail] = useState('')
-    const [telephone, setTelephone] = useState('')
-    const [userlevel, setUserlevel] = useState(1)
-    const [password, setPassword] = useState('')
-    const [cpassword, setCPassword] = useState('')
-
-    //station creation useStates
-    const [stationName, setStationName] = useState('')
-    const [stationSlots, setStationSlots] = useState(0)
-    const [stationPrice, setStationPrice] = useState(0)
-    const [stationFloors, setStationFloors] = useState(1)
-    const [stationMaxslotsFloor, setStationMaxSlotsFloor] = useState(0)
-    const [stationAdmin, setStationAdmin] = useState('')
-
+    const [regNr, setRegNr] = useState('')
 
     //admin interface useStates
     const [errormsg, setErrormsg] = useState('')
@@ -37,33 +21,39 @@ export default function UserClient({DestroySession, adminList, CreateUser, Creat
             case 'userDataInterface':
                 return
             case 'carDataInterface':
-                return
+                return CarDataInterface()
             case 'parkingDataInterface':
                 return
         }
     }
-
-    async function CreateNewUser() {
-        if (!username || !name || !adress || !email || !telephone || !userlevel || !password || !cpassword) {
-            setErrormsg('You are missing user fields')
-        } else {
-            if (cpassword === password) {
-                const res = await CreateUser(username, cpassword, name, adress, email, telephone, userlevel)
-                if (res[0].UserID)
-                    setSucessmsg('User: ' + username + ' added.')
-            } else {
-                setErrormsg('Passwords dont match')
-            }
+    async function CreateNewCar() {
+        if(!regNr){
+            setErrormsg('You are missing regNr fields')
+        }else{
+            let res = await CreateCar(regNr)
         }
     }
-    async function CreateNewStation() {
-        if (!stationName || !stationSlots || !stationPrice || !stationFloors || !stationMaxslotsFloor || !stationAdmin) {
-            setErrormsg('Passwords dont match')
-        } else {
-            const res = await CreateStation(stationName, stationAdmin, stationSlots, stationPrice, stationFloors, stationMaxslotsFloor)
-            setSucessmsg('Station: ' + stationName + ' added.')
-        }
-    }
+    // async function CreateNewUser() {
+    //     if (!username || !name || !adress || !email || !telephone || !userlevel || !password || !cpassword) {
+    //         setErrormsg('You are missing user fields')
+    //     } else {
+    //         if (cpassword === password) {
+    //             const res = await CreateUser(username, cpassword, name, adress, email, telephone, userlevel)
+    //             if (res[0].UserID)
+    //                 setSucessmsg('User: ' + username + ' added.')
+    //         } else {
+    //             setErrormsg('Passwords dont match')
+    //         }
+    //     }
+    // }
+    // async function CreateNewStation() {
+    //     if (!stationName || !stationSlots || !stationPrice || !stationFloors || !stationMaxslotsFloor || !stationAdmin) {
+    //         setErrormsg('Passwords dont match')
+    //     } else {
+    //         const res = await CreateStation(stationName, stationAdmin, stationSlots, stationPrice, stationFloors, stationMaxslotsFloor)
+    //         setSucessmsg('Station: ' + stationName + ' added.')
+    //     }
+    // }
     async function ExitAdminInterface() {
         let res = await DestroySession();
         if (res === 'success')
@@ -98,41 +88,26 @@ export default function UserClient({DestroySession, adminList, CreateUser, Creat
     function CreationInterface() {
         return (<>
             <div className='rounded-lg justify-center items-center  bg-cyan-100 w-[30%] h-fit p-5 flex flex-col gap-3.5'>
-                <p>Register new station</p>
+                <p>Register new car</p>
                 <div className='pb-5 flex flex-col gap-3.5 justify-center items-center w-full'>
-                    <DefaultInput text={'Station name'} value={stationName} onValueChange={setStationName} />
-                    <DefaultInput type={'number'} value={stationSlots} text={'Parking slots'} onValueChange={setStationSlots} />
-                    <DefaultInput type={'number'} value={stationPrice} text={'Price'} onValueChange={setStationPrice} />
-                    <DefaultInput type={'number'} value={stationFloors} text={'Floors'} onValueChange={setStationFloors} />
-                    <DefaultInput type={'number'} value={stationMaxslotsFloor} text={'Max slots per floor'} onValueChange={setStationMaxSlotsFloor} />
-                    <p className='w-4/5 lg:w-3/5  xl:w-2/5'>Station admin<br />
-                        <select className='bg-amber-50 p-1 rounded-lg outline-gray-800 outline w-full ' >
-                            {adminList.map((admin) => <option key={admin.UserID} className='bg-amber-50' onClick={() => setStationAdmin(admin.UserID)}>{admin.Name}</option>)}
-                        </select>
-                    </p>
+                    <DefaultInput text={'Car registration number'} value={regNr} onValueChange={setRegNr}/>
                 </div>
-                <DefaultButton type={'submit'} clickFunction={CreateNewStation} text={'Create station'} />
+                <DefaultButton type={'submit'} clickFunction={CreateNewCar} text={'Add car'} />
             </div>
-            <div className='rounded-lg justify-center items-center bg-cyan-100 w-[30%] h-fit p-5 flex flex-col gap-3.5'>
-                <p>Register new user</p>
-                <div className='pb-5 flex flex-col gap-3.5 justify-center items-center w-full'>
-                    <DefaultInput value={username} text={'Username'} onValueChange={setUsername} />
-                    <DefaultInput value={name} text={'Name'} onValueChange={setName} />
-                    <DefaultInput value={adress} text={'Adress'} onValueChange={setAdress} />
-                    <DefaultInput value={email} text={'Email'} onValueChange={setEmail} />
-                    <DefaultInput value={telephone} text={'Telephone'} onValueChange={setTelephone} />
-                    <p className='w-4/5 lg:w-3/5  xl:w-2/5'>User rights<br />
-                        <select className='bg-amber-50 p-1 rounded-lg outline-gray-800 outline w-full ' >
-                            <option key={'userLevel'} className='bg-amber-50' onClick={() => setUserlevel(1)}>1 (normal user)</option>
-                            <option key={'stationAdmin'} onClick={() => setUserlevel(5)}>5 (station admin)</option>
-                            <option key={'superAdmin'} onClick={() => setUserlevel(10)}>10 (super admin)</option>
-                        </select>
-                    </p>
-                    <DefaultInput value={password} text={'Password'} onValueChange={setPassword} />
-                    <DefaultInput value={cpassword} text={'Confirm password'} onValueChange={setCPassword} />
-                </div>
-                <DefaultButton type={'submit'} clickFunction={CreateNewUser} text={'Create user'} />
+       
+        </>)
+    }
+    function CarDataInterface() {
+        return (<>
+            <div className='rounded-lg justify-center items-center  bg-cyan-100 w-[30%] h-fit p-5 flex flex-col gap-3.5'>
+                <p>Cars</p>
+                <table>
+                    <tr><td>hi</td><td>bye</td></tr>
+                    <tr>car1</tr>
+                    <tr>car2</tr>
+                </table>
             </div>
+       
         </>)
     }
 }
