@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server';
 //funksjonaliteten sender brukere tilbake til hvor de har rettigheter til å være
 //f. eks stopper vanlige brukere fra å ha tilgang til admin sidene og stopper brukere som ikke har logget inn.
 export async function middleware(request) {
-    const needsSession = ["/admin", "/stationAdmin", "/user"]
+    const needsSession = ["/admin", "/stationAdmin", "/user","/test"]
     if (needsSession.some(url => request.nextUrl.pathname.startsWith(url))) {
         const session = await getIronSession(request.cookies, {
             password: process.env.SESSION_PWD,

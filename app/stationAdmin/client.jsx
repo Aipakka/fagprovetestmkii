@@ -45,29 +45,7 @@ export default function StationAdminClient({ DestroySession, adminList, CreateUs
                 return
         }
     }
-//wrapper funksjon for å trigge funksjon for oppretting av ny bruker sendt fra serveren når knapp trykkes
-    async function CreateNewUser() {
-        if (!username || !name || !adress || !email || !telephone || !userlevel || !password || !cpassword) {
-            setErrormsg('You are missing user fields')
-        } else {
-            if (cpassword === password) {
-                const res = await CreateUser(username, cpassword, name, adress, email, telephone, userlevel)
-                if (res[0].UserID)
-                    setSucessmsg('User: ' + username + ' added.')
-            } else {
-                setErrormsg('Passwords dont match')
-            }
-        }
-    }
-    //wrapper funksjon for å trigge funksjon for oppretting av ny stasjon sendt fra serveren når knapp trykkes
-    async function CreateNewStation() {
-        if (!stationName || !stationSlots || !stationPrice || !stationFloors || !stationMaxslotsFloor || !stationAdmin) {
-            setErrormsg('Passwords dont match')
-        } else {
-            const res = await CreateStation(stationName, stationAdmin, stationSlots, stationPrice, stationFloors, stationMaxslotsFloor)
-            setSucessmsg('Station: ' + stationName + ' added.')
-        }
-    }
+
     //logger bruker ut av system
     async function ExitInterface() {
         let res = await DestroySession();

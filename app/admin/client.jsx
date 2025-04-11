@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation'
 export default function AdminClient({ DestroySession, adminList, CreateUser, CreateStation }) {
     //file variables
     const router = useRouter();
+    
     //user creation useStates
     const [username, setUsername] = useState('')
     const [name, setName] = useState('')
@@ -44,6 +45,29 @@ export default function AdminClient({ DestroySession, adminList, CreateUser, Cre
                 return
             case 'parkingDataInterface':
                 return
+        }
+    }
+    //wrapper funksjon for å trigge funksjon for oppretting av ny bruker sendt fra serveren når knapp trykkes
+    async function CreateNewUser() {
+        if (!username || !name || !adress || !email || !telephone || !userlevel || !password || !cpassword) {
+            setErrormsg('You are missing user fields')
+        } else {
+            if (cpassword === password) {
+                const res = await CreateUser(username, cpassword, name, adress, email, telephone, userlevel)
+                if (res[0].UserID)
+                    setSucessmsg('User: ' + username + ' added.')
+            } else {
+                setErrormsg('Passwords dont match')
+            }
+        }
+    }
+    //wrapper funksjon for å trigge funksjon for oppretting av ny stasjon sendt fra serveren når knapp trykkes
+    async function CreateNewStation() {
+        if (!stationName || !stationSlots || !stationPrice || !stationFloors || !stationMaxslotsFloor || !stationAdmin) {
+            setErrormsg('Passwords dont match')
+        } else {
+            const res = await CreateStation(stationName, stationAdmin, stationSlots, stationPrice, stationFloors, stationMaxslotsFloor)
+            setSucessmsg('Station: ' + stationName + ' added.')
         }
     }
 
