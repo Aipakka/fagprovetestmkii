@@ -9,6 +9,7 @@ import SQL from '../../lib/sql';
 // "user": ""
 // }
 //API for å registrere når kjøretøy parkerer  og drar fra parkeringsplassen
+//henter tidspunkt fra når API blir oppkalt
 export async function POST(request) {
     try {
         const requestBody = await request.json();

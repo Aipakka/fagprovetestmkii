@@ -1,5 +1,9 @@
 import { getIronSession } from 'iron-session';
 import { NextResponse } from 'next/server';
+
+//middleware, blir kjørt imellom hver request som brukeren av nettsiden gjør
+//funksjonaliteten sender brukere tilbake til hvor de har rettigheter til å være
+//f. eks stopper vanlige brukere fra å ha tilgang til admin sidene og stopper brukere som ikke har logget inn.
 export async function middleware(request) {
     const needsSession = ["/admin", "/stationAdmin", "/user"]
     if (needsSession.some(url => request.nextUrl.pathname.startsWith(url))) {
